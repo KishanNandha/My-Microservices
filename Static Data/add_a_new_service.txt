@@ -1,0 +1,13 @@
+1)Create project with following dep
+	spring-boot-starter-actuator
+	spring-cloud-config-client
+	spring-boot-starter-data-jpa
+	spring-boot-starter-web
+	spring-boot-devtools
+	mysql-connector-java
+	
+2)Configure Spring Cloud Config Server
+	Add prop files in git repo
+	Add path in config server
+
+3)
