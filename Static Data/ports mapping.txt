@@ -2,3 +2,4 @@ Course Service : 8000
 Student Service: 8001
 
 Config Server : 8888
+eureka-naming-server : 8761

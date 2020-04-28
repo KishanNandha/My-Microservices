@@ -1,3 +1,4 @@
-1) Config server
-2) Student Service
-3) Course Service
+1) Eureka Server
+2) Config server
+3) Student Service
+4) Course Service
