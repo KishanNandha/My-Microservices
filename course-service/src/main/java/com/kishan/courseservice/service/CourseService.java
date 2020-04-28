@@ -1,12 +1,11 @@
 package com.kishan.courseservice.service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import com.kishan.courseservice.beans.CourseResponseBean;
 import com.kishan.courseservice.beans.Student;
@@ -17,6 +16,9 @@ import com.kishan.courseservice.repository.CourseRepo;
 
 @Service
 public class CourseService {
+	
+	@Autowired
+	private Environment environment;
 	
 	@Autowired
 	private CourseRepo courseRepo;
@@ -43,10 +45,13 @@ public class CourseService {
 						 //Arrays.asList(students)
 						students
 						.stream()
-						.map(student -> new StudentResponseBean(student.getStudentId(), student.getStudentName()))
+						.map(student -> new StudentResponseBean(student.getStudentId(), student.getStudentName(),student.getPort()))
 						.collect(Collectors.toList());
 				responseBean.setStudents(studentResponseBean);
 			}
+			
+			String port = environment.getProperty("local.server.port");
+			responseBean.setCourseServicePort(port);
 		}
 		return responseBean;
 	}

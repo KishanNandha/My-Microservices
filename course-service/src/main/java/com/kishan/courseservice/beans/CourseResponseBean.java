@@ -11,6 +11,8 @@ public class CourseResponseBean {
 	private String courseName;
 	private String courseDesc;
 	
+	private String courseServicePort;
+	
 	private List<StudentResponseBean> students;
 
 
@@ -46,7 +48,13 @@ public class CourseResponseBean {
 	public void setStudents(List<StudentResponseBean> students) {
 		this.students = students;
 	}
-	
-	
+
+	public String getCourseServicePort() {
+		return courseServicePort;
+	}
+
+	public void setCourseServicePort(String courseServicePort) {
+		this.courseServicePort = courseServicePort;
+	}
 	
 }

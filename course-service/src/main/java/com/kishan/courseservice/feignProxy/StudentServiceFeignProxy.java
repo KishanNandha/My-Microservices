@@ -2,6 +2,7 @@ package com.kishan.courseservice.feignProxy;
 
 import java.util.List;
 
+import org.springframework.cloud.netflix.ribbon.RibbonClient;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,7 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import com.kishan.courseservice.beans.Student;
 
 //This enables proxy creating for student service
-@FeignClient(name="student-service", url="localhost:8001")
+//@FeignClient(name="student-service", url="localhost:8001")
+
+//Hard coded URL was removed
+@FeignClient(name="student-service")
+//This enables Ribbon (Client Side Load Balancing)
+@RibbonClient(name="student-service")
 public interface StudentServiceFeignProxy {
 
 	@GetMapping("/students/course/{courseId}")

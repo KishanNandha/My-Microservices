@@ -6,6 +6,8 @@ public class Student {
 	private String studentName;
 	private int courseId;
 	
+	private String port;
+	
 	
 	public int getStudentId() {
 		return studentId;
@@ -24,6 +26,12 @@ public class Student {
 	}
 	public void setCourseId(int courseId) {
 		this.courseId = courseId;
+	}
+	public String getPort() {
+		return port;
+	}
+	public void setPort(String port) {
+		this.port = port;
 	}
 
 	

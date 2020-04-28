@@ -5,9 +5,13 @@
 	spring-boot-starter-web
 	spring-boot-devtools
 	mysql-connector-java
+	spring-cloud-starter-openfeign
+	spring-cloud-starter-netflix-ribbon
 	
 2)Configure Spring Cloud Config Server
 	Add prop files in git repo
 	Add path in config server
 
 3)
+
+-Dserver.port=8002
