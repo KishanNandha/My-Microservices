@@ -1,0 +1,4 @@
+https://github.com/dmajkic/redis/downloads
+In Windows, you just have to download the zip and extract it into any location. Open redis-server.exe from the extracted folder and the Redis server will be started.
+
+After that, you can open redis-cli.exe from the same folder. redis-cli is the Redis command line interface, a simple program that allows you to send commands to Redis and read the replies sent by the server directly from the terminal.

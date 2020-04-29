@@ -1,7 +1,14 @@
-Course Service : 8000
-Student Service: 8001
+mysql : 3306
+
+Course Service : 8000,8010
+Student Service: 8001,8002
 
 Config Server : 8888
 eureka-naming-server : 8761
 
 zuul-server : 5555
+
+redis server : 6379
+
+zookeeper : 2181
+kafka message broker : 9092

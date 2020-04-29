@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import com.kishan.courseservice.beans.Student;
 import com.kishan.courseservice.beans.StudentResponseBean;
 import com.kishan.courseservice.feignProxy.StudentServiceFeignProxy;
 import com.kishan.courseservice.model.Course;
+import com.kishan.courseservice.redis.StudentCacheManager;
 import com.kishan.courseservice.repository.CourseRepo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
@@ -30,6 +33,11 @@ public class CourseService {
 	@Autowired
 	private StudentServiceFeignProxy studentServiceFeignProxy;
 	
+	@Autowired
+	private StudentCacheManager studentCacheManager;
+	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	public CourseResponseBean getCourseDetails(String courseName) {
 		CourseResponseBean responseBean = new CourseResponseBean();
 		Course course = courseRepo.findByCourseName(courseName);
@@ -42,7 +50,7 @@ public class CourseService {
 			//RestTemplate restTemplate = new RestTemplate();
 			//Student[] students = restTemplate.getForObject("http://localhost:8001/students/course/{courseId}", Student[].class,course.getCourseId());
 			
-			List<Student> students = callStudentService(course);
+			List<Student> students = getStudentsForCourse(course);
 			
 			if(null != students) {
 				List<StudentResponseBean> studentResponseBean = 
@@ -58,6 +66,21 @@ public class CourseService {
 			responseBean.setCourseServicePort(port);
 		}
 		return responseBean;
+	}
+	
+	private List<Student> getStudentsForCourse(Course course) {
+		
+		//Get the data from cache
+		List<Student> cachedStudents = studentCacheManager.getCachedStudentsForCourse(course.getCourseName());
+		if(null == cachedStudents) {
+			logger.info("Not able to get data from cache. calling service");
+			cachedStudents = callStudentService(course);
+			studentCacheManager.cacheStudnetDetails(course.getCourseName(), cachedStudents);
+		}
+		else {
+			logger.info("Getting student list from cache");
+		}
+		return cachedStudents;
 	}
 	
 	//Hystrix and Spring Cloud use the @HystrixCommand annotation to mark Java class methods as being managed by a Hystrix circuit breaker. 
@@ -82,12 +105,21 @@ public class CourseService {
 	
 	
 	//The fallback method must have the exact same method signature as the originating function as all of the parameters passed into the original method protected by the @HystrixCommand will be passed to the fallback.
-	private List<Student> getFallbackStuddentList(Course course) {
+	public List<Student> getFallbackStuddentList(Course course) {
 		Student student = new Student();
 		student.setStudentId(0);
 		student.setStudentName("This is demo student CIRCUIT BREAKER ENABLED!!! No Response From Student Service at this moment. \" +\r\n" + 
 				"                    \" Service will be back shortly - ");
 		return Arrays.asList(student);
+	}
+	
+	public void refreshStudentCacheData() {
+		//currently hard coding course data
+		Course course = new Course();
+		course.setCourseId(1);
+		course.setCourseName("Java");
+		List<Student> students = callStudentService(course);
+		studentCacheManager.cacheStudnetDetails(course.getCourseName(), students);
 	}
 	
 	/**

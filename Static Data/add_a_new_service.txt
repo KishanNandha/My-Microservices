@@ -11,6 +11,11 @@
 	spring-cloud-starter-netflix-hystrix
 	spring-cloud-starter-netflix-hystrix-dashboard
 	hystrix-javanica
+	spring-cloud-stream
+	spring-cloud-starter-stream-kafka
+	spring-data-redis
+	jedis
+	commons-pool2
 	
 2)Configure Spring Cloud Config Server
 	Add prop files in git repo

@@ -59,15 +59,40 @@
 		    <artifactId>spring-cloud-starter-netflix-hystrix-dashboard</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-stream</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-stream-kafka</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-redis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>redis.clients</groupId>
+			<artifactId>jedis</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-pool2</artifactId>
+		</dependency>
+		
+		<dependency>
 		    <groupId>com.netflix.hystrix</groupId>
 		    <artifactId>hystrix-javanica</artifactId>
 		</dependency>
-		<dependency>
+<!-- 		When you use DevTools with caching, you need to be aware of this limitation.
+
+When the object is serialized into the cache, the application class loader is C1. Then after you change some code/configuration, devtools automatically restart the context and creates a new classloader (C2). When you hit that cache method, the cache abstraction finds an entry in the cache and it deserializes it from the store. If the cache library doesn't take the context classloader into account, that object will have the wrong classloader attached to it (which explains that weird exception A cannot be cast to A). -->
+		<!-- <dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-devtools</artifactId>
 			<scope>runtime</scope>
 			<optional>true</optional>
-		</dependency>
+		</dependency> -->
 		
 		<dependency>
 			<groupId>mysql</groupId>

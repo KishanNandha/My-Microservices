@@ -1,0 +1,20 @@
+Download and Extract Apache Zookeeper using 7-Zip
+Download: http://zookeeper.apache.org/releases.html#download
+
+JRE is required to run Apache Zookeeper.
+
+At the time of writing this, the stable version of zookeeper is 3.4.9
+
+You can download and unzip it anywhere but for the sake of this guide, i am assuming that zookeeper is extracted in C:\Tools\
+Instructions:
+
+    Copy and Rename “zoo_sample.cfg” to “zoo.cfg” in C:\Tools\zookeeper-3.4.9\conf
+    Create data directory in zookeeper folder.
+    Find & edit dataDir=/tmp/zookeeper to C:\\Tools\\zookeeper\\zookeeper-3.4.9\\data using any text editor like notepad or notepad++. (change the zookeeper version as yours)
+    dataDir=C:\\Tools\\zookeeper\\zookeeper-3.4.9\\data
+    Add entries in System Environment Variables.
+    Add in System Variables ZOOKEEPER_HOME = C:\Tools\zookeeper-3.4.9
+    Edit System Variable named “Path” and append this in the last ;%ZOOKEEPER_HOME%\bin;
+    Open command prompt and type zkserver.
+
+zkserver will start the zookeeper on the defualt port which is 2181, you can change the default port in zoo.cfg file

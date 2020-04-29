@@ -1,5 +1,8 @@
-1) Eureka Server
-2) Config server
-3) zuul server
-4) Student Service
-5) Course Service
+1) zookeeper
+2) start kafka
+3) Start redis server
+4) Eureka Server
+5) Config server
+6) zuul server
+7) Student Service
+8) Course Service
