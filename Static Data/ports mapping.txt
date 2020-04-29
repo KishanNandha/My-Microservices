@@ -3,3 +3,5 @@ Student Service: 8001
 
 Config Server : 8888
 eureka-naming-server : 8761
+
+zuul-server : 5555
