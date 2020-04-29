@@ -8,6 +8,9 @@
 	spring-cloud-starter-openfeign
 	spring-cloud-starter-netflix-ribbon
 	spring-cloud-starter-netflix-eureka-client
+	spring-cloud-starter-netflix-hystrix
+	spring-cloud-starter-netflix-hystrix-dashboard
+	hystrix-javanica
 	
 2)Configure Spring Cloud Config Server
 	Add prop files in git repo
