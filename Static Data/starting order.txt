@@ -1,5 +1,6 @@
-1) zookeeper
-2) start kafka
+1) zookeeper (currently not configured)
+2) start kafka (currently not configured)
+3) Start zipkin server via docker
 3) Start redis server
 4) Eureka Server
 5) Config server

@@ -104,11 +104,13 @@ public class CourseService {
 			)
 	private List<Student> callStudentService(Course course) {
 		//randomlyRunLong();
+		logger.info("Before calling student service");
 		//This is not right way to handel feign exception
 		//right method is to use FeignErrorDecoder. This enables centralized exception handling
 		List<Student> students = null;
 		try {
 			students = studentServiceFeignProxy.retrieveStudentDetailsForCourse(course.getCourseId());
+			logger.info("After calling student service");
 		} catch (FeignException e) {
 			logger.error(e.getLocalizedMessage());
 		}

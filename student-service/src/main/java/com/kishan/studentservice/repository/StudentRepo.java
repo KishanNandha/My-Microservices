@@ -10,5 +10,6 @@ import com.kishan.studentservice.model.Student;
 @Repository
 public interface StudentRepo extends CrudRepository<Student, Integer> {
 
+	
 	List<Student> findByCourseId(int courseId);
 }

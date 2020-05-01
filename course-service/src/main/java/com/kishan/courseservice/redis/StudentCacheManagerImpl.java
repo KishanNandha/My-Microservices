@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
+import org.springframework.cloud.sleuth.annotation.SpanTag;
 import org.springframework.context.annotation.Configuration;
 
 import com.kishan.courseservice.beans.Student;
@@ -20,8 +22,9 @@ public class StudentCacheManagerImpl implements StudentCacheManager {
 
     }
 
+    @NewSpan(name="redis-service")
     @Override
-    public void cacheStudnetDetails(String courseName,List<Student> students){
+    public void cacheStudnetDetails(@SpanTag("courseName") String courseName,List<Student> students){
         redisUtilStudent.putMap(TABLE_STUDENT,courseName,students);
         redisUtilStudent.setExpire(TABLE_STUDENT,1,TimeUnit.DAYS);
     }

@@ -3,7 +3,10 @@ package com.kishan.studentservice.service;
 import java.util.List;
 import java.util.Random;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.sleuth.annotation.NewSpan;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +24,8 @@ public class StudentService {
 	@Autowired
 	private Environment environment;
 	
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
+	
 	//Hystrix and Spring Cloud use the @HystrixCommand annotation to mark Java class methods as being managed by a Hystrix circuit breaker. 
 	//When the Spring framework sees the @HystrixCommand, it will dynamically generate a proxy that will wrapper the method and manage all calls to that method through a thread pool of threads specifically set aside to handle remote calls.
 	@HystrixCommand(
@@ -32,15 +37,21 @@ public class StudentService {
 					name="execution.isolation.thread.timeoutInMilliseconds",
 					value="12000")
 				})
+	
 	public List<Student> getStudentsByCourseId(int courseId) {
 		//This method will set circuit breaker 
 		//randomlyRunLong();
-		List<Student> students = studentRepo.findByCourseId(courseId);
+		logger.info("Before calling database");
+		List<Student> students = getStudentsFormDb(courseId);
 		String port = environment.getProperty("local.server.port");
 		students.forEach(studnet -> {studnet.setPort(port);});
 		return students;
 	}
 
+	@NewSpan(name="mysql-db")
+	private List<Student> getStudentsFormDb(int courseId) {
+		return studentRepo.findByCourseId(courseId);
+	}
 	/**
 	 * This method is used to generate delay(not every time but randomly)
 	 */
