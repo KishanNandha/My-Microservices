@@ -29,7 +29,10 @@ public class StudentCacheManagerImpl implements StudentCacheManager {
 	@Override
 	public List<Student> getCachedStudentsForCourse(String courseName) {
 		
-		return redisUtilStudent.getMapAsSingleEntry(TABLE_STUDENT, courseName);
+		//return redisUtilStudent.getMapAsSingleEntry(TABLE_STUDENT, courseName);
+		
+		//This is used to temp disabled cache
+		return null;
 	}
 
 }

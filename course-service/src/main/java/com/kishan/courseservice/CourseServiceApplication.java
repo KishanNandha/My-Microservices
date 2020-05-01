@@ -9,9 +9,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
 import org.springframework.cloud.netflix.hystrix.dashboard.EnableHystrixDashboard;
 import org.springframework.cloud.openfeign.EnableFeignClients;
-import org.springframework.cloud.stream.annotation.EnableBinding;
-import org.springframework.cloud.stream.annotation.StreamListener;
-import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
 import org.springframework.data.redis.connection.jedis.JedisClientConfiguration;
@@ -21,7 +18,6 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
-import com.kishan.courseservice.event.StudentChangeModel;
 import com.kishan.courseservice.service.CourseService;
 
 @SpringBootApplication
@@ -32,7 +28,7 @@ import com.kishan.courseservice.service.CourseService;
 //This is to enable Hystrix Dashboard
 @EnableHystrixDashboard
 //This enables listening to queue
-@EnableBinding(Sink.class)
+//@EnableBinding(Sink.class)
 public class CourseServiceApplication {
 	
     @Value("${spring.redis.host}")
@@ -48,12 +44,6 @@ public class CourseServiceApplication {
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CourseServiceApplication.class, args);
-	}
-
-	@StreamListener(Sink.INPUT)
-	public void loggerSink(StudentChangeModel change) {
-		logger.info("Received event for {} action {}", change.getStudentName(), change.getChangeType());
-		courseService.refreshStudentCacheData();
 	}
 
 	@Bean
@@ -75,6 +65,11 @@ public class CourseServiceApplication {
         redisTemplate.setValueSerializer(new JdkSerializationRedisSerializer());
         redisTemplate.setConnectionFactory(jedisConnectionFactory());
         return redisTemplate;
+    }
+    
+    @Bean
+    feign.Logger.Level feginLoggerLevel() {
+    	return  feign.Logger.Level.FULL;
     }
 
 }

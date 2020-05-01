@@ -21,6 +21,8 @@ import com.kishan.courseservice.repository.CourseRepo;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixProperty;
 
+import feign.FeignException;
+
 @Service
 public class CourseService {
 	
@@ -93,14 +95,24 @@ public class CourseService {
 					@HystrixProperty(
 					name="execution.isolation.thread.timeoutInMilliseconds",
 					value="12000")
-				},
+				}
+			//,
 			
+			//This wont work with feign client enabled. this will work with Spring REST Template	
 			//This attribute will contain the name of a method that will be called when Hystrix has to interrupt a call because it’s taking too long.
-			fallbackMethod = "getFallbackStuddentList"	
+			//fallbackMethod = "getFallbackStuddentList"	
 			)
 	private List<Student> callStudentService(Course course) {
 		//randomlyRunLong();
-		return studentServiceFeignProxy.retrieveStudentDetailsForCourse(course.getCourseId());
+		//This is not right way to handel feign exception
+		//right method is to use FeignErrorDecoder. This enables centralized exception handling
+		List<Student> students = null;
+		try {
+			students = studentServiceFeignProxy.retrieveStudentDetailsForCourse(course.getCourseId());
+		} catch (FeignException e) {
+			logger.error(e.getLocalizedMessage());
+		}
+		return students;
 	}
 	
 	

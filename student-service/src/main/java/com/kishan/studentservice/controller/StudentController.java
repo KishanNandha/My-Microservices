@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.kishan.studentservice.events.SimpleSourceBean;
 import com.kishan.studentservice.model.Student;
 import com.kishan.studentservice.repository.StudentRepo;
 import com.kishan.studentservice.service.StudentService;
@@ -25,8 +24,6 @@ public class StudentController {
 	@Autowired
 	private StudentRepo studentRepo;
 	
-	@Autowired
-	private SimpleSourceBean source;
 	
 	@GetMapping(path="/students/course/{courseId}")
 	List<Student> getStudentsByCourseId(@PathVariable int courseId) {
@@ -39,7 +36,7 @@ public class StudentController {
 		Student updatedStudent = studentRepo.save(student);
 		if(null != updatedStudent) {
 			//Putting event in queue
-			source.publishStudentChange("UPDATE", updatedStudent.getStudentId(), updatedStudent.getStudentName());
+			//source.publishStudentChange("UPDATE", updatedStudent.getStudentId(), updatedStudent.getStudentName());
 			returnMsg = "Student data updated";
 		}
 		return returnMsg;
